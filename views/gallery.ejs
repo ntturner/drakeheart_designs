@@ -1,0 +1,175 @@
+<% include partials/head-tag %>
+
+<title>Gallery - Drakeheart Designs</title>
+
+</head>
+<body>
+
+<% include partials/header %>
+
+    <% if(currentAdmin){ 
+        if(currentAdmin.username == "dhd-admin") {
+            if(success && success.length > 0){ %>
+            <div class="container alert alert-success" role="alert"><%= success %></div>
+        <% } else if(error && error.length > 0){ %>
+            <div class="container alert alert-danger" role="alert"><%= error %></div>
+        <% } %>
+    
+    <div class="container mx-auto mt-3">
+        <button class="btn btn-primary text-light" data-toggle="modal" data-target="#newgal-form">New Gallery Entry</button>
+    </div>
+
+    <div class="modal fade" id="newgal-form">
+        <div class="modal-dialog">
+            <form class="modal-content" action="/gallery/new" method="POST" enctype="multipart/form-data">
+                <div class="modal-body form-group">
+                    <label for="postName" class="control-label required">Name: </label>
+                    <input type="text" class="form-control" name="newGalName" id="postName" required><br>
+                    <label for="postPic" class="control-label required">Picture upload: </label>
+                    <input type="file" class="form-control-file" name="newGalPic" id="postPic" required><br>
+                    <label for="postType" class="control-label required">Plush type/origin: </label>
+                    <select name="newGalType" id="postType" class="form-control" required>
+                        <option></option>
+                        <option>MLP</option>
+                        <option>OC Pony</option>
+                        <option>OC Dragon</option>
+                        <option>DHD Original</option>
+                        <option>OC Custom Pattern</option>
+                        <option>Custom Pattern</option>
+                        <option>Dragon</option>
+                    </select>
+                    <br>
+                    <label for="postPrice" class="control-label">Price: </label>
+                    <input type="number" class="form-control" name="newGalPrice" id="postPrice"><br>
+                    <label for="postDescription" align="top">Plush description: </label>
+                    <textarea class="form-control" id="postDescription" name="newGalDescription"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" id="postSubmit" class="btn btn-success">
+                    <button class="btn btn-light" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deletegal-form">
+        <div class="modal-dialog">
+            <form class="modal-content" action="/gallery/destroy" method="POST">
+                <div class="modal-body">
+                    <p>Are you sure you want to delete <strong><span id="delete-name" class="text-danger"></span></strong>?</p>
+                    <input type="hidden" value="" name="galobject_id" id="delete-id">
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-danger" value="Yes" name="deleter">
+                    <button class="btn btn-secondary" data-dismiss="modal">No</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="editgal-form">
+        <div class="modal-dialog">
+            <form class="modal-content" action="/gallery/update" method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit <span id="edit-name"></span></h5>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="edit-id" name="editobject_id" value="">
+                    <label for="edit-type" class="control-label required">Plush type/origin: </label>
+                    <select name="editobject[type]" id="edit-type" class="form-control" required>
+                        <option></option>
+                        <option>MLP</option>
+                        <option>OC Pony</option>
+                        <option>OC Dragon</option>
+                        <option>DHD Original</option>
+                        <option>OC Custom Pattern</option>
+                        <option>Custom Pattern</option>
+                        <option>Dragon</option>
+                    </select>
+                    <br>
+                    <label for="edit-price" class="control-label">Price: </label>
+                    <input type="number" class="form-control" name="editobject[price]" id="edit-price"><br>
+                    <label for="edit-desc" align="top">Plush description: </label>
+                    <textarea class="form-control" id="edit-desc" name="editobject[desc]"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-success" value="Submit" name="submitter">
+                    <button class="btn btn-light" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <% } 
+    } %>
+                
+    <!--Image posts will follow this format.-->
+    <div class="row mt-3">
+        <% aoGalObjects.reverse().forEach(function(galObject){
+        /*var jsGalArray = [];
+
+        for(var iCount = (aoGalObjects.length - 1); iCount > 0; iCount--){ 
+            if(iCount > aoGalObjects.length -13){
+                var galObject = aoGalObjects[iCount];*/ %>
+        
+        <div class="galleryObjectWrapper">
+        <a href="gallery/<%= galObject._id %>" class="galleryLink">
+        <div class="galleryObject">
+            <div class="galleryImgContainer">
+                    <img src="<%= galObject.image %>" class="galleryImage">
+            </div>
+            <div class="galleryObjectInfo">
+                <ul class="galleryList">
+                    <li><strong>Name:</strong> <%= galObject.name %></li>
+                    <li><%= galObject.type %></li>
+                    <li><%= galObject.description %></li>
+                </ul>
+            </div>
+            
+        </div>
+        </a>
+            
+        <% if(!currentAdmin){
+
+        } else {
+            if(currentAdmin.username == "dhd-admin"){%>
+        <div class="admin-btn-group">
+            <button class="btn btn-outline-danger btn-deleter" data-toggle="modal" data-target="#deletegal-form">
+                <i class="far fa-trash-alt"></i>
+            </button>
+            <button class="btn btn-outline-warning btn-updater" data-toggle="modal" data-target="#editgal-form">
+                <i class="far fa-edit"></i>
+            </button>
+            <span class="hidden form-id-input"><%= galObject._id %></span>
+            <span class="hidden form-name-input"><%= galObject.name %></span>
+            <span class="hidden form-type-input"><%= galObject.type %></span>
+            <span class="hidden form-price-input"><%= galObject.price %></span>
+            <span class="hidden form-desc-input"><%= galObject.description %></span>
+        </div>
+        <% }
+        } %> 
+        </div>
+        <% });
+            /*} else {
+                var galObject = aoGalObjects[iCount];
+                var galEntry = "<div class=\"galleryObjectWrapper\"><a href=\"gallery/" + galObject._id + "\" class=\"galleryLink\"><div class=\"galleryObject\"><div class=\"galleryImgContainer\"><img src=\"" + galObject.image + "\" class=\"galleryImage\"></div><div class=\"galleryObjectInfo\"><ul class=\"galleryList\"><li><strong>Name:</strong> " + galObject.name + "</li><li>" + galObject.type + "</li><li>" + galObject.description + "</li></ul></div></div></a>";
+                
+                jsGalArray.push(galEntry);
+            }*/
+        %>
+    </div>
+    
+    <div class="container mt-5 text-center">
+        <h5>Want one of your own?</h5>
+        <a class="btn btn-info mt-1" href="/order">Order Now!</a> 
+    </div>
+
+    <!--
+    <footer>
+        <div class="footer-copyright">
+            <p>© Drakeheart Designs </p>
+        </div>
+    </footer>
+    -->
+<script src="/gallery.js"></script>
+<% include partials/footer %>

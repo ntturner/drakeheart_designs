@@ -1,0 +1,351 @@
+<% include partials/head-tag %>
+
+<title>Price Estimator | Drakeheart Designs</title>
+
+</head>
+<body>
+
+<% include partials/header %>
+        
+    <h1 class="text-center" id="mainCalcTitle">Price Estimator</h1>
+    <h5 class="text-center">Please specify below what kind of plush you would like!</h5>
+    <div class="container text-center">
+        <p class="proviso">Note: The price listed is only an estimate, not a guarantee. To receive an official price quote, you may send in an <a href="/order">order form</a> with no strings attached. By sending in an order form, you agree to all of our <a href="/terms-and-conditions">terms and conditions</a>.</p>
+    </div>
+
+    <div id="doTheQuote" class="container mx-auto mt-4">
+        <div id="plushType">
+            <p>Which kind of plush do you want?</p>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="pony" name="whatPlush" onclick="showSize();hideColor();hideFeatures();waitPonyFeatures();hideButton();resetValues()">
+                <label class="form-check-label" for="pony">Pony</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="dragon" name="whatPlush" onclick="showFeatures();hidePony();hideColor();hideButton();resetValues()">
+                <label class="form-check-label" for="dragon">Dragon</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="customPlush" name="whatPlush" onclick="showColor();hidePony();hideFeatures();hideButton();resetValues()">
+                <label class="form-check-label" for="customPlush">Custom Pattern</label>
+            </div>
+        </div>
+        <div id="size" class="hidden">
+            <p>Select one of the following sizes for your pony: </p>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="size1" name="howBig" onclick="showTribe()">
+                <label class="form-check-label" for="size1">Filly</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="size2" name="howBig" onclick="showTribe()">
+                <label class="form-check-label" for="size2">Standard</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="size3" name="howBig" onclick="showTribe()">
+                <label class="form-check-label" for="size3">Princess</label>
+            </div>
+        </div>
+        <div id="ponyTribe" class="hidden">
+            <p>Please select the pony tribe: </p>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="earthPony" name="tribal" onclick="showManeColor()">
+                <label class="form-check-label" for="earthPony">Earth Pony</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="unicorn" name="tribal" onclick="showManeColor()">
+                <label class="form-check-label" for="unicorn">Unicorn</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="pegasus" name="tribal" onclick="showManeColor()">
+                <label class="form-check-label" for="pegasus">Pegasus</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="alicorn" name="tribal" onclick="showManeColor()">
+                <label class="form-check-label" for="alicorn">Alicorn</label>
+            </div>
+        </div>
+        <div id="maneColor" class="hidden">
+            <p>How many colors are in your pony's mane?</p>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="maneColor2" name="manes" onclick="showButton()">
+                <label class="form-check-label" for="maneColor2">2 or Less</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="maneColor3" name="manes" onclick="showButton()">
+                <label class="form-check-label" for="maneColor3">3</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="maneColor4" name="manes" onclick="showButton()">
+                <label class="form-check-label" for="maneColor4">4</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="maneColor5" name="manes" onclick="showButton()">
+                <label class="form-check-label" for="maneColor5">5 or More</label>
+            </div>
+        </div>
+        <div id="dragonFeatures" class="hidden">
+            <p>Please select any of the following features you would like on your dragon (horns/spines are not extra): </p>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="dragonTuft" name="features">
+                <label class="form-check-label" for="dragonTuft">Hair Tuft</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="dragonMane" name="features">
+                <label class="form-check-label" for="dragonMane">Hair Mane</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="dragonFeathers" name="features">
+                <label class="form-check-label" for="dragonFeathers">Feathered Wings</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="dragonBelly" name="features">
+                <label class="form-check-label" for="dragonBelly">Belly Scales</label>
+            </div>
+            <br>
+            <button id="featuresButton" class="btn btn-light" onclick="showColor()">Next</button>
+        </div>
+        <div id="bodyColor" class="hidden">
+            <p>How many colors do you have on the body?</p>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="oneColor" name="whatColor" onclick="showButton()">
+                <label class="form-check-label" for = "oneColor">One</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="twoColor" name="whatColor" onclick="showButton()">
+                <label class="form-check-label" for = "twoColor">Two</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="moreColor" name="whatColor" onclick="showButton()">
+                <label class="form-check-label" for = "moreColor">Patterning</label>
+            </div>
+        </div>
+        <button id="quoteButton" class="btn btn-info hidden mt-3">Get a quote!</button>
+        <button id="resetButton" class="btn btn-light hidden mt-3" onclick="resetValues();hideAll();resetPlushType()">Reset Values</button>
+        <br>
+        <h5 id="result"></h5>        
+
+<!--Drakeheart Designs footer, from template-->
+
+        <script>
+
+            //Declare variables for quote button equation.
+
+            var plush;
+            var size;
+            var chromo;
+            var total;
+            var features = 0;
+            var tribe = 0;
+
+            //Size selection appears when 'Pony' is selected.
+
+            function showSize(){
+                document.getElementById('size').classList.remove('hidden');
+            }
+
+            //After size selection, display pony tribe selection.
+
+            function showTribe(){
+                document.getElementById('ponyTribe').classList.remove('hidden');
+            }
+
+            //After pony tribe selection, display mane color selection.
+
+            function showManeColor(){
+                document.getElementById('maneColor').classList.remove('hidden');
+            }
+
+            //Dragon features appear when 'Dragon' is selected.
+
+            function showFeatures(){
+                document.getElementById('dragonFeatures').classList.remove('hidden');
+            }
+
+            //Color selection appears when 'Custom Plush' is selected or 'Next' is clicked.
+
+            function showColor(){
+                document.getElementById('bodyColor').classList.remove('hidden');
+            }
+
+            //If anything in plushType is selected, hide quote button.
+
+            function hideButton(){
+                document.getElementById('quoteButton').classList.add('hidden');
+                document.getElementById('resetButton').classList.add('hidden');
+            }
+
+            //After color selection, display quote button.
+
+            function showButton(){
+                document.getElementById('quoteButton').classList.remove('hidden');
+            }
+
+            //The following functions enable customers to switch between
+            //'Dragon', 'Pony', and 'Custom'.
+
+            function hidePony(){
+                var hiddenSize = document.getElementById('size');
+                var hiddenTribe = document.getElementById('ponyTribe');
+                var hiddenMane = document.getElementById('maneColor');
+                if(document.getElementById('dragon').checked || document.getElementById('customPlush').checked){
+                    hiddenSize.classList.add('hidden');
+                    hiddenTribe.classList.add('hidden');
+                    hiddenMane.classList.add('hidden');
+                }else if(document.getElementById('pony').checked){
+                    hiddenSize.classList.remove('hidden');
+                }
+            }
+            function hideColor(){
+                var colorGone = document.getElementById('bodyColor');
+                if(document.getElementById('pony').checked || document.getElementById('dragon').checked){
+                    colorGone.classList.add('hidden');
+                }else if (document.getElementById('customPlush').checked){
+                    colorGone.classList.remove('hidden');
+                }
+            }
+            function hideFeatures(){
+                var hiddenFeatures = document.getElementById('dragonFeatures');
+                if(document.getElementById('pony').checked || document.getElementById('customPlush').checked){
+                    hiddenFeatures.classList.add('hidden');
+                }else if (document.getElementById('dragon').checked){
+                    hiddenFeatures.classList.remove('hidden');
+                }
+            }
+            function waitPonyFeatures(){
+                var hiddenTribe = document.getElementById('ponyTribe');
+                var hiddenMane = document.getElementById('maneColor');
+
+                hiddenTribe.classList.add('hidden');
+                hiddenMane.classList.add('hidden');
+
+            }
+
+            //Reset all input values and hide result value.
+
+            function resetValues(){
+                document.getElementById('size1').checked = false;
+                document.getElementById('size2').checked = false;
+                document.getElementById('size3').checked = false;
+                document.getElementById('size3').checked = false;
+                document.getElementById('oneColor').checked = false;
+                document.getElementById('twoColor').checked = false;
+                document.getElementById('moreColor').checked = false;
+                document.getElementById('dragonTuft').checked = false;
+                document.getElementById('dragonMane').checked = false;
+                document.getElementById('dragonFeathers').checked = false;
+                document.getElementById('dragonBelly').checked = false;
+                document.getElementById('earthPony').checked = false;
+                document.getElementById('unicorn').checked = false;
+                document.getElementById('pegasus').checked = false;
+                document.getElementById('alicorn').checked = false;
+                document.getElementById('maneColor2').checked = false;
+                document.getElementById('maneColor3').checked = false;
+                document.getElementById('maneColor4').checked = false;
+                document.getElementById('maneColor5').checked = false;
+
+                document.getElementById('result').classList.add('hidden');
+            }
+
+            //Reset plush type values when Reset button is clicked.
+
+            function resetPlushType(){
+                document.getElementById('pony').checked = false;
+                document.getElementById('dragon').checked = false;
+                document.getElementById('customPlush').checked = false;
+            }
+
+            //Hides everything when reset button is clicked.
+
+            function hideAll(){
+                document.getElementById('size').classList.add('hidden');
+                document.getElementById('ponyTribe').classList.add('hidden');
+                document.getElementById('maneColor').classList.add('hidden');
+                document.getElementById('bodyColor').classList.add('hidden');
+                document.getElementById('dragonFeatures').classList.add('hidden');
+
+                document.getElementById('quoteButton').classList.add('hidden');
+                document.getElementById('resetButton').classList.add('hidden');
+                
+            }
+
+
+            $("#quoteButton").click(function(){
+
+                //Get value based on plush type.
+
+                if (document.getElementById('pony').checked) {
+                    plush = 125;
+                } else if (document.getElementById('dragon').checked) {
+                    plush = 250;
+                } else if (document.getElementById('customPlush').checked) {
+                    plush = 350;
+                }
+
+                //Add value to ponies depending on selected size.
+
+                if(document.getElementById('size1').checked){
+                    size = 0;
+                }else if(document.getElementById('size2').checked){
+                    size = 0;
+                }else if(document.getElementById('size3').checked){
+                    size = 100;
+                }else{
+                    size = 0;
+                }
+
+                //Add value to ponies depending on selected tribe.
+
+                if(document.getElementById('earthPony').checked){
+                    tribe = 0;
+                }else if(document.getElementById('unicorn').checked){
+                    tribe = 0;
+                }else if(document.getElementById('pegasus').checked){
+                    tribe = 25;
+                }else if(document.getElementById('alicorn').checked){
+                    tribe = 50;
+                }else{
+                    tribe = 0;
+                }
+
+                //Generate a total for dragon features.
+
+                features = 0;
+
+                if (document.getElementById('dragonTuft').checked){
+                    features = features + 25;
+                }
+                if (document.getElementById('dragonMane').checked){
+                    features = features + 50;
+                }
+                if (document.getElementById('dragonFeathers').checked){
+                    features = features + 100;
+                }
+                if (document.getElementById('dragonBelly').checked){
+                    features = features + 15;
+                }
+
+                //Get value for body colors on dragons or custom patterns or for mane colors on ponies.
+
+                if(document.getElementById('oneColor').checked){
+                    chromo = 0;
+                }else if(document.getElementById('twoColor').checked){
+                    chromo = 50;
+                }else if(document.getElementById('moreColor').checked){
+                    chromo = 100;
+                }else if(document.getElementById('maneColor2').checked){
+                    chromo = 0;
+                }else if(document.getElementById('maneColor3').checked){
+                    chromo = 15;
+                }else if(document.getElementById('maneColor4').checked){
+                    chromo = 30;
+                }else if(document.getElementById('maneColor5').checked){
+                    chromo = 50;
+                }
+
+                total = plush + size + chromo + features + tribe;
+                $("#result").html('Estimate: <strong>$' + total + '</strong><a class="btn btn-info m-responsive" id="order-link" href="/order">Order Now!</a>');
+                document.getElementById('result').classList.remove('hidden');
+                document.getElementById('resetButton').classList.remove('hidden');
+            });
+        </script>            
+    </div>
+<% include partials/footer %>

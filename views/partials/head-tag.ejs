@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link rel="icon" type="image/png" href="/newlogo.png">
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link href="/myStyles.css" type="text/css" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+    
+    <script>
+        function NavbarDropdown(e) {
+            var target = e.target;
+            
+            if(target.id == "about-nav-btn"){
+                document.getElementById("aboutDropdown").classList.toggle('show');
+                
+                if(document.getElementById("shopDropdown").classList.contains('show')) {
+                    document.getElementById("shopDropdown").classList.remove('show');
+                }
+            } else if(target.id == "shop-nav-btn"){
+                document.getElementById("shopDropdown").classList.toggle('show');  
+                
+                if(document.getElementById("aboutDropdown").classList.contains('show')) {
+                    document.getElementById("aboutDropdown").classList.remove('show');
+                }
+            }
+        }
+        
+        //Remove menus if anywhere except the menus are clicked.
+        window.onclick = function(event) {
+            if(!event.target.matches('.dropdown')) {
+                if(document.getElementById("shopDropdown").classList.contains('show')) {
+                    document.getElementById("shopDropdown").classList.remove('show');
+                }
+                if(document.getElementById("aboutDropdown").classList.contains('show')) {
+                    document.getElementById("aboutDropdown").classList.remove('show');
+                }
+            }
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>

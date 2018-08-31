@@ -231,7 +231,7 @@ app.post("/send-order", function(req, res){
         port: 587,
         secure: false, // true for 465, false for other ports
         auth: {
-            user: "drakeheartdesigns@gmail.com", //use email on server, ie commissions@drakeheartdesigns.com
+            user: "dhdcommissions@gmail.com", //use email on server, ie commissions@drakeheartdesigns.com
             pass: process.env.MAILERPASS //password for that email
         },
         //For local testing
@@ -242,7 +242,7 @@ app.post("/send-order", function(req, res){
 
     // setup email data with unicode symbols
     let mailOptions = {
-        from: '"Commissions" <drakeheartdesigns@gmail.com>', // same email address as the auth user listed in the transporter let above
+        from: '"Commissions" <dhdcommissions@gmail.com>', // same email address as the auth user listed in the transporter let above
         to: 'drakeheartdesigns@gmail.com', // just go to dhd
         subject: 'New Commission', // Subject line
         html: output, // html body

@@ -41,7 +41,7 @@ function checkImgType(file, cb){
 var app = express();
 
 //Connect to MongoDB.
-mongoose.connect(process.env.DB_LINK || "mongodb://localhost/dhd");
+mongoose.connect(process.env.DATABASEURL);
 
 app.use(require("express-session")({
     secret: "Snuggle Cupcake, Orange Chile, and Triple Snake",
@@ -104,11 +104,7 @@ app.get("/gallery", function(req, res){
         if(err){
             console.log(err);
         } else{
-            if(galObjects.length){
-                res.render("gallery", {aoGalObjects: galObjects, currentAdmin: req.user});
-            } else {
-                res.render("gallery", {currentAdmin: req.user});
-            }
+            res.render("gallery", {aoGalObjects: galObjects, currentAdmin: req.user});
         }
     });
     
@@ -272,7 +268,7 @@ app.get("/admin/login", function(req, res){
 });
 
 app.post("/admin/login", passport.authenticate("local", {
-    successRedirect: "/",
+    successRedirect: "/gallery",
     failureRedirect: "/admin/login"
 }), function(req, res){
     
@@ -282,22 +278,22 @@ app.get("/logout", function(req, res){
     req.logout();
 });
 
-//app.get("/dhd/register/new-admin", function(req, res){
-//    res.render("register");
-//});
-//
-//app.post("/dhd/register/new-admin", function(req, res){
-//    req.body.username;
-//    req.body.password;
-//    User.register(new User({username: req.body.username}), req.body.password, function(err, user){
-//        if(err){
-//            console.log(err);
-//            return res.render("register");
-//        } else {
-//            res.redirect("/");
-//        }
-//    });
-//});
+/*app.get("/dhd/register/new-admin", function(req, res){
+    res.render("register");
+});
+
+app.post("/dhd/register/new-admin", function(req, res){
+    req.body.username;
+    req.body.password;
+    User.register(new User({username: req.body.username}), req.body.password, function(err, user){
+        if(err){
+            console.log(err);
+            return res.render("register");
+        } else {
+            res.redirect("/admin/login");
+        }
+    });
+});*/
 
 //Middleware to check logged in status.
 function IsLoggedIn(req, res, next){

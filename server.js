@@ -230,14 +230,14 @@ app.post("/send-order", function(req, res){
         host: 'smtp.gmail.com', //probably will change when using dhd.com email
         port: 587,
         secure: false, // true for 465, false for other ports
-        /*auth: {
-            user: , //use email on server, ie commissions@drakeheartdesigns.com
-            pass:  //password for that email
-        },*/
+        auth: {
+            user: "drakeheartdesigns@gmail.com", //use email on server, ie commissions@drakeheartdesigns.com
+            pass: process.env.MAILERPASS //password for that email
+        },
         //For local testing
-        /*tls:{
+        tls:{
             rejectUnauthorized: false
-        }*/
+        }
     });
 
     // setup email data with unicode symbols

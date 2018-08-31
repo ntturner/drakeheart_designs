@@ -105,7 +105,8 @@
                 
     <!--Image posts will follow this format.-->
     <div class="row mt-3">
-        <% aoGalObjects.reverse().forEach(function(galObject){
+        <% if(aoGalObjects.length){ 
+        aoGalObjects.reverse().forEach(function(galObject){
         /*var jsGalArray = [];
 
         for(var iCount = (aoGalObjects.length - 1); iCount > 0; iCount--){ 
@@ -156,7 +157,7 @@
                 
                 jsGalArray.push(galEntry);
             }*/
-        %>
+        } %>
     </div>
     
     <div class="container mt-5 text-center">

@@ -104,7 +104,11 @@ app.get("/gallery", function(req, res){
         if(err){
             console.log(err);
         } else{
-            res.render("gallery", {aoGalObjects: galObjects, currentAdmin: req.user});
+            if(galObjects.length){
+                res.render("gallery", {aoGalObjects: galObjects, currentAdmin: req.user});
+            } else {
+                res.render("gallery", {currentAdmin: req.user});
+            }
         }
     });
     

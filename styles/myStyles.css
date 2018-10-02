@@ -514,16 +514,19 @@ a.bg-custom:focus, a.bg-custom:hover {
 
 #myFooter .social-networks a:hover {
     text-decoration: none;
+    text-shadow: 1px 1px teal;
 }
 
 #myFooter .facebook:hover {
     color: #0077e2;
-    text-shadow: 1px 1px teal;
+}
+
+#myFooter .deviant:hover {
+    color: #05cc47;
 }
 
 #myFooter .instagram:hover {
     color: #0077e2;
-    text-shadow: 1px 1px teal;
 }
 
 

@@ -9,10 +9,12 @@ var express = require("express"),
     LocalStrategy = require("passport-local"),
     passportLocalMongoose = require("passport-local-mongoose"),
     nodemailer = require("nodemailer"),
-    flash = require("connect-flash");
+    flash = require("connect-flash"),
+    cloudinary = require("cloudinary");
 
 var storage = multer.diskStorage({
-    destination: "./images/",
+    /*This destination does not work with heroku, so cloudinary is being used as an alternative.
+    destination: "./images/",*/
     filename: function(req, file, cb){
         cb(null, Date.now() + "-" + file.originalname);
     }
@@ -23,7 +25,7 @@ var upload = multer({
     fileFilter: function(req, file, cb){
         checkImgType(file, cb);
     }
-}).single("newGalPic");
+});
 
 //Check file type
 function checkImgType(file, cb){
@@ -37,6 +39,12 @@ function checkImgType(file, cb){
         cb("Error: Wrong file type.");
     }
 }
+
+cloudinary.config({
+    cloud_name: 'drakeheart-designs',
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secrect: process.env.CLOUDINARY_API_SECRET
+});
 
 var app = express();
 
@@ -122,7 +130,7 @@ app.get("/gallery/:id", function(req, res){
 });
 
 //Post route to add a new gallery object.
-app.post("/gallery/new", IsLoggedIn, upload, function(req, res){
+app.post("/gallery/new", IsLoggedIn, upload.single("newGalPic"), function(req, res){
     //Get form data and set to a variable.
     if(req.user.username == "dhd-admin"){
         var newGalName = req.body.newGalName;
@@ -130,43 +138,39 @@ app.post("/gallery/new", IsLoggedIn, upload, function(req, res){
         var newGalDescription = req.body.newGalDescription;
         var newGalPrice = req.body.newGalPrice;
         var newGalPic;
-
-        upload(req, res, (err) => {
+        
+        cloudinary.uploader.upload(req.file.path, function(result) {
+        
+        /*This upload function is for storage in public directory. Cloudinary is the current alternative.
+        //upload(req, res, (err) => {
             if(err){
                 console.log(err);
             } else{
-                newGalPic = req.file.filename;
-
-                var galleryPost = {
-                    name: newGalName,
-                    type: newGalType,
-                    price: newGalPrice,
-                    description: newGalDescription,
-                    image: newGalPic
-                };    
+                newGalPic = req.file.filename;*/
+            
+            //Get Cloudinary url.
+            newGalPic = result.secure_url;
+            
+            var galleryPost = {
+                name: newGalName,
+                type: newGalType,
+                price: newGalPrice,
+                description: newGalDescription,
+                image: newGalPic
+            };    
 
         //Add gallery object to database.
-                GalleryObject.create(galleryPost, function(err, galObj){
-                    if(err){
-                        console.log(err);
-                    } else{
-                        console.log("\nNew gallery object in db DHD: ");
-                        console.log(galObj + "\n");
-                        res.redirect("/gallery");
-                    }
-                });
-            }
+            GalleryObject.create(galleryPost, function(err, galObj){
+                if(err){
+                    console.log(err);
+                } else{
+                    console.log("\nNew gallery object in db DHD: ");
+                    console.log(galObj + "\n");
+                    res.redirect("/gallery");
+                }
+            });
         });
     }
-    /*var newGalPic = req.files.newGalPic;
-    var GalPicName = newGalPic.name;
-    
-    newGalPic.mv("/images/" + GalPicName + req.files.newGalPic.mimetype, function(err){
-        if(err){
-            console.log(err);
-        }
-    });*/
-    
 });
 
 app.post('/gallery/destroy', IsLoggedIn, function(req, res){

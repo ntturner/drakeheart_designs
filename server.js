@@ -43,7 +43,7 @@ function checkImgType(file, cb){
 cloudinary.config({
     cloud_name: 'drakeheart-designs',
     api_key: process.env.CLOUDINARY_API_KEY,
-    api_secrect: process.env.CLOUDINARY_API_SECRET
+    api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
 var app = express();

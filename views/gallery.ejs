@@ -58,6 +58,7 @@
                 <div class="modal-body">
                     <p>Are you sure you want to delete <strong><span id="delete-name" class="text-danger"></span></strong>?</p>
                     <input type="hidden" value="" name="galobject_id" id="delete-id">
+                    <input type="hidden" value="" name="galobject_imageid" id="delete-imageid">
                 </div>
                 <div class="modal-footer">
                     <input type="submit" class="btn btn-danger" value="Yes" name="deleter">
@@ -142,6 +143,7 @@
                 <i class="far fa-edit"></i>
             </button>
             <span class="hidden form-id-input"><%= galObject._id %></span>
+            <span class="hidden form-imageid-input"><%= galObject.image_id %></span>
             <span class="hidden form-name-input"><%= galObject.name %></span>
             <span class="hidden form-type-input"><%= galObject.type %></span>
             <span class="hidden form-price-input"><%= galObject.price %></span>

@@ -87,7 +87,8 @@ var gallerySchema = new mongoose.Schema({
     type: String,
     price: Number,
     description: String,
-    image: String
+    image: String,
+    image_id: String
 });
 
 var GalleryObject = mongoose.model("GalleryObject", gallerySchema);
@@ -138,6 +139,7 @@ app.post("/gallery/new", IsLoggedIn, upload.single("newGalPic"), function(req, r
         var newGalDescription = req.body.newGalDescription;
         var newGalPrice = req.body.newGalPrice;
         var newGalPic;
+        var newPicId;
         
         cloudinary.uploader.upload(req.file.path, function(result) {
         
@@ -150,13 +152,15 @@ app.post("/gallery/new", IsLoggedIn, upload.single("newGalPic"), function(req, r
             
             //Get Cloudinary url.
             newGalPic = result.secure_url;
+            newPicId = result.public_id;
             
             var galleryPost = {
                 name: newGalName,
                 type: newGalType,
                 price: newGalPrice,
                 description: newGalDescription,
-                image: newGalPic
+                image: newGalPic,
+                image_id: newPicId
             };    
 
         //Add gallery object to database.
@@ -175,16 +179,25 @@ app.post("/gallery/new", IsLoggedIn, upload.single("newGalPic"), function(req, r
 
 app.post('/gallery/destroy', IsLoggedIn, function(req, res){
     if(req.user.username == "dhd-admin"){
-        GalleryObject.findByIdAndRemove(req.body.galobject_id, function(err){
+        //Remove cloudinary images at the same time as the deletion of the gallery objects.
+        cloudinary.v2.uploader.destroy(req.body.galobject_imageid, function(err){
             if(err){
-                req.flash("error", "There was an error while deleting the document. Please try again.");
-                
+                req.flash("error", "Could not remove image from Cloudinary services.");
                 console.log(err);
                 res.redirect("/gallery");
             } else {
-                req.flash("success", "Gallery object successfully deleted.");
-                
-                res.redirect("/gallery");
+                GalleryObject.findByIdAndRemove(req.body.galobject_id, function(err){
+                    if(err){
+                        req.flash("error", "There was an error while deleting the document. Please try again.");
+
+                        console.log(err);
+                        res.redirect("/gallery");
+                    } else {
+                        req.flash("success", "Gallery object successfully deleted.");
+
+                        res.redirect("/gallery");
+                    }
+                });
             }
         });
     }

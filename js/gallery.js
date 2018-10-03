@@ -1,8 +1,10 @@
 $(".btn-deleter").on("click", function(){
     var gal_id = $(this).parent().children(".form-id-input").text();
+    var gal_imageid = $(this).parent().children(".form-imageid-input").text();
     var gal_name = $(this).parent().children(".form-name-input").text();
     
     $("#delete-id").val(gal_id);
+    $("#delete-imageid").val(gal_imageid);
     $("#delete-name").html(gal_name);
 });
 

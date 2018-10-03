@@ -3,10 +3,14 @@
 </head>
 <body>
 
-<form action="/admin/login" method="POST">
-    <input type="text" name="username">
-    <input type="password" name="password">
-    <input type="submit" name="submit">
+<form action="/admin/login" method="POST" class="my-5">
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username" class="form-control"><br>
+        <label for="pass">Password</label>
+        <input type="password" name="password" id="pass" class="form-control"><br>
+        <input type="submit" name="submit" class="btn btn-success">
+    </div>
 </form>
     
 <% include partials/footer %>

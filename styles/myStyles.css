@@ -260,6 +260,13 @@ h5{
     height: 360px;
 }
 
+.deviant{
+    color: #05cc47;
+}
+.deviant:hover{
+    color: #049534;
+}
+
 .gallery-body{
     margin-right: 0px !important;
     margin-left: 0px !important;

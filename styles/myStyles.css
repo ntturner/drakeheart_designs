@@ -260,6 +260,10 @@ h5{
     height: 360px;
 }
 
+.gallery-body{
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+}
 .galleryObject{
     width: 90%;
     margin: auto;

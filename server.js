@@ -52,7 +52,7 @@ var app = express();
 mongoose.connect(process.env.DATABASEURL);
 
 app.use(require("express-session")({
-    secret: "Snuggle Cupcake, Orange Chile, and Triple Snake",
+    secret: process.env.EXPRESS_SECRET,
     resave: false,
     saveUninitialized: false
 }));

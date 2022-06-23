@@ -236,6 +236,10 @@ app.get("/magic-shoppe", function(req, res){
     res.render("magicshoppe");
 });
 
+app.get("/faq", function(req, res){
+    res.render("faq");
+});
+
 app.get("/order", function(req, res){
     res.render("order");
 });

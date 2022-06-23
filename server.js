@@ -49,7 +49,7 @@ cloudinary.config({
 var app = express();
 
 //Connect to MongoDB.
-mongoose.connect(process.env.DATABASEURL);
+// mongoose.connect(process.env.DATABASEURL);
 
 app.use(require("express-session")({
     secret: process.env.EXPRESS_SECRET,
@@ -71,9 +71,9 @@ app.set("view engine", "ejs");
 app.use(flash());
 
 //Setup passport serialization and deserialization.
-passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+// passport.use(new LocalStrategy(User.authenticate()));
+// passport.serializeUser(User.serializeUser());
+// passport.deserializeUser(User.deserializeUser());
 
 app.use(function(req, res, next){
     res.locals.error = req.flash("error");
@@ -82,16 +82,16 @@ app.use(function(req, res, next){
 });
 
 //Set up schema for gallery stuff and create corresponding objects.
-var gallerySchema = new mongoose.Schema({
-    name: String,
-    type: String,
-    price: Number,
-    description: String,
-    image: String,
-    image_id: String
-});
+// var gallerySchema = new mongoose.Schema({
+//     name: String,
+//     type: String,
+//     price: Number,
+//     description: String,
+//     image: String,
+//     image_id: String
+// });
 
-var GalleryObject = mongoose.model("GalleryObject", gallerySchema);
+// var GalleryObject = mongoose.model("GalleryObject", gallerySchema);
 
 
 /********* ROUTES *********/
@@ -244,44 +244,46 @@ app.get("/order", function(req, res){
     res.render("order");
 });
 
-app.post("/send-order", function(req, res){    
+app.post("/send-order", function(req, res){
+    req.flash("error", "Currently not available. Please use email at bottom of page.");
+    return res.redirect('/order');
     //Use nodemailer to handle commission requests to drakeheartdesigns@gmail.com.
-    var output = "<h3>Commission Details</h3><ul><li>Name: " + req.body.customer_name + "</li><li>Email: " + req.body.customer_email + "</li><li>Reference: " + req.body.customer_pic + "</li><li>Message: " + req.body.customer_desc + "</li></ul>";
-    let transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com', //probably will change when using dhd.com email
-        port: 587,
-        secure: false, // true for 465, false for other ports
-        auth: {
-            user: "dhdcommissions@gmail.com", //use email on server, ie commissions@drakeheartdesigns.com
-            pass: process.env.MAILERPASS //password for that email
-        },
-        //For local testing
-        tls:{
-            rejectUnauthorized: false
-        }
-    });
+    // var output = "<h3>Commission Details</h3><ul><li>Name: " + req.body.customer_name + "</li><li>Email: " + req.body.customer_email + "</li><li>Reference: " + req.body.customer_pic + "</li><li>Message: " + req.body.customer_desc + "</li></ul>";
+    // let transporter = nodemailer.createTransport({
+    //     host: 'smtp.gmail.com', //probably will change when using dhd.com email
+    //     port: 587,
+    //     secure: false, // true for 465, false for other ports
+    //     auth: {
+    //         user: "dhdcommissions@gmail.com", //use email on server, ie commissions@drakeheartdesigns.com
+    //         pass: process.env.MAILERPASS //password for that email
+    //     },
+    //     //For local testing
+    //     tls:{
+    //         rejectUnauthorized: false
+    //     }
+    // });
 
-    // setup email data with unicode symbols
-    let mailOptions = {
-        from: '"Commissions" <dhdcommissions@gmail.com>', // same email address as the auth user listed in the transporter let above
-        to: 'drakeheartdesigns@gmail.com', // just go to dhd
-        subject: 'New Commission', // Subject line
-        html: output, // html body
-    };
+    // // setup email data with unicode symbols
+    // let mailOptions = {
+    //     from: '"Commissions" <dhdcommissions@gmail.com>', // same email address as the auth user listed in the transporter let above
+    //     to: 'drakeheartdesigns@gmail.com', // just go to dhd
+    //     subject: 'New Commission', // Subject line
+    //     html: output, // html body
+    // };
 
-    // send mail with defined transport object
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            req.flash("error", "We encountered an error. Please try again later or email us using the email found at the bottom of the page.");
+    // // send mail with defined transport object
+    // transporter.sendMail(mailOptions, (error, info) => {
+    //     if (error) {
+    //         req.flash("error", "We encountered an error. Please try again later or email us using the email found at the bottom of the page.");
             
-            console.log(error);
-            return res.redirect('/order');;
-        }
-        console.log('Message sent: %s', info.messageId);
+    //         console.log(error);
+    //         return res.redirect('/order');
+    //     }
+    //     console.log('Message sent: %s', info.messageId);
         
-        req.flash("success", "Order was sent successfully! Please allow 2-3 business days for a response.");
-        res.redirect('/order');
-    });
+    //     req.flash("success", "Order was sent successfully! Please allow 2-3 business days for a response.");
+    //     res.redirect('/order');
+    // });
 });
 
 app.get("/admin/login", function(req, res){

@@ -204,6 +204,13 @@ h5{
     animation-delay: 1.5s;
     animation-fill-mode: forwards;
 }
+.tca-overflow {
+    max-height: 75vh;
+    overflow-y: auto;
+}
+.tca-overflow::webkit-scrollbar {
+    display: none;
+}
 
 @keyframes appear{
     from {opacity: 0;}

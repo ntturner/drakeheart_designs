@@ -208,7 +208,7 @@ h5{
     max-height: 75vh;
     overflow-y: auto;
 }
-.tca-overflow::webkit-scrollbar {
+.tca-overflow::-webkit-scrollbar {
     display: none;
 }
 
